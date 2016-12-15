@@ -23,9 +23,8 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-
-import android.widget.Toast;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -53,6 +52,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // [END_EXCLUDE]
 
         // TODO(developer): Handle FCM messages here.
+        sendLocalBroadcast(remoteMessage.getNotification());
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
         Log.d(TAG, "From: " + remoteMessage.getFrom());
 
@@ -102,5 +102,20 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+    }
+
+    private void sendLocalBroadcast(RemoteMessage.Notification notification) {
+        // Get title
+        String title = notification.getTitle();
+        // Get body
+        String body = notification.getBody();
+
+        Log.d("sender", "Broadcasting message");
+        Intent intent = new Intent("custom-event-name");
+        // You can also include some extra data.
+        intent.putExtra("message", "This is my message!");
+        intent.putExtra("title", title);
+        intent.putExtra("body", body);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 }
