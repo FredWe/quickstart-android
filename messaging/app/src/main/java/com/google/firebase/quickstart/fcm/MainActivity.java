@@ -21,6 +21,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -67,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        final EditText regTokenEditText = (EditText) findViewById (R.id.regTokenEditText);
         Button logTokenButton = (Button) findViewById(R.id.logTokenButton);
         logTokenButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
                 String msg = getString(R.string.msg_token_fmt, token);
                 Log.d(TAG, msg);
                 Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                regTokenEditText.setText(token);
             }
         });
     }
